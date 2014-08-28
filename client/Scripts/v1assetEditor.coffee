@@ -152,7 +152,6 @@ define ["backbone", "underscore", "toastr", "jquery", "v1json", "jquery.mobile",
           @newAsset()
 
     configureListPage: ->
-      console.log("ssdfsd");
       assets = $("#assets")
       assets.empty()
       assets.listview()
@@ -217,6 +216,8 @@ define ["backbone", "underscore", "toastr", "jquery", "v1json", "jquery.mobile",
 
     listItemFormat: (item) ->
       templ = $("<li></li>")
+      console.log("The item to append:");
+      console.log(item);
       templ.html $("#assetItemTemplate").render(item)
       templ.children(".assetItem").bind "click", (e) =>        
         target = $(e.currentTarget)
@@ -262,6 +263,8 @@ define ["backbone", "underscore", "toastr", "jquery", "v1json", "jquery.mobile",
 
     _normalizeHrefWithoutMoment: (item) ->
       href = item._links.self.href
+      console.log("The href:");
+      console.log(href);
       if href.match(/\D\/\d*?\/\d*$/)
         href = href.split("/")
         href.pop()

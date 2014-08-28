@@ -3,13 +3,22 @@ var request = require('request');
 var express = require('express');
 var app = express();
 var cors = require('cors');
+var nconf = require('nconf');
 
 app.use(bodyParser.text({ type : 'application/xml' }));
 app.use(cors());
 
+var configFile = "config.json";
+
+// Reads the config file, but overrides with any environment vars
+nconf.file(configFile).env();
+
+var v1ServiceUrl = nconf.get("v1ServiceUrl");
+var v1Auth = "Basic " + (new Buffer(nconf.get("v1Auth")).toString('base64'));
+
 function getUrl(url) {
-    //remove the initial slash    
-    return url.substr(4, url.length - 4);
+    var fragment = url.substr(4, url.length - 4);
+    return v1ServiceUrl + fragment;
 }
 
 function getHeaders(headers) {
@@ -19,6 +28,7 @@ function getHeaders(headers) {
             continue;
         result[h] = headers[h];
     }
+    result["authorization"] = v1Auth;
     return result;
 }
 
